@@ -1,8 +1,12 @@
+import os
+
 import psutil
 from PIL import Image
 
 from db.connection import Connection
 from dialogs.dialogs import Dialogs
+
+DIE_TYPES = [4, 6, 8, 10, 12, 20]
 
 
 def kill_open_images():
@@ -13,29 +17,29 @@ def kill_open_images():
 
 
 def get_input():
-    strSides, return_code = Dialogs.input_box("How many sides?")
-    print(strSides)
-    if return_code == 1:
-        exit()
-    sides = int(strSides)
     strValue, return_code = Dialogs.input_box("What value is showing?")
-    print(strValue)
     if return_code == 1:
         exit()
     value = int(strValue)
-    return sides, value
+    return value
 
 
 def main():
+    # Create db connection and init db
     conn = Connection()
     conn.init_db()
-    img = Image.open("./training-data/train/d4/d4_angle_color000.jpg")
-    img.show()
-    sides, value = get_input()
-    kill_open_images()
-    conn.add_image_classification(
-        sides, value, "./training-data/train/d4/d4_angle_color000.jpg"
-    )
+
+    for die_type in DIE_TYPES:
+        dir_path = f"./training-data/train/d{die_type}"
+        for image_path in os.listdir(dir_path):
+            fpath = f"{dir_path}/{image_path}"
+            if conn.image_classification_exists(fpath):
+                continue
+            img = Image.open(fpath)
+            img.show()
+            value = get_input()
+            kill_open_images()
+            conn.add_image_classification(die_type, value, fpath)
 
 
 if __name__ == "__main__":

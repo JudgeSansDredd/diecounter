@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session
 
 from db.models import ImageClassification
@@ -23,3 +23,11 @@ class Connection:
             image_classification = ImageClassification(**kwargs)
             session.add(image_classification)
             session.commit()
+
+    def image_classification_exists(self, image_path):
+        with Session(self.engine) as session:
+            stmt = select(ImageClassification).where(
+                ImageClassification.image_path.__eq__(image_path)
+            )
+            image_classification = session.scalar(stmt)
+            return False if not image_classification else True
