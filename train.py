@@ -35,11 +35,11 @@ def main():
             fpath = f"{dir_path}/{image_path}"
             if conn.image_classification_exists(fpath):
                 continue
-            img = Image.open(fpath)
-            img.show()
-            value = get_input()
-            kill_open_images()
-            conn.add_image_classification(die_type, value, fpath)
+            with Image.open(fpath) as img:
+                img.show()
+                value = get_input()
+                kill_open_images()
+                conn.add_image_classification(die_type, value, fpath)
 
 
 if __name__ == "__main__":
