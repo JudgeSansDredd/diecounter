@@ -1,6 +1,7 @@
 import psutil
 from PIL import Image
 
+from db.connection import Connection
 from dialogs.dialogs import Dialogs
 
 
@@ -31,4 +32,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    # main()
+    conn = Connection()
