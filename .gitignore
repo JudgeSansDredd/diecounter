@@ -3,3 +3,4 @@ __pycache__
 training-data/**/*.jpg
 training-data/**/*.JPG
 *.sqlite
+models/*.pth
