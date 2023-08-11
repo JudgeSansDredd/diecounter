@@ -1,7 +1,7 @@
-scipy
-numpy
 ipython
 pillow
 psutil
 whiptail-dialogs
 SQLAlchemy
+fastai
+jupyter
