@@ -1,6 +1,6 @@
 from fastai.vision.all import *
 
-root_dir = Path("../../")
+root_dir = Path("./")
 training_data_path = root_dir.joinpath("training-data/train")
 validation_data_path = root_dir.joinpath("training-data/valid")
 
