@@ -1,12 +1,19 @@
+from pathlib import Path
+
 from fastai.vision.all import *
 
-root_dir = Path("./")
+from db.connection import Connection
+
+root_dir = Path("./").resolve()
 training_data_path = root_dir.joinpath("training-data/train")
 validation_data_path = root_dir.joinpath("training-data/valid")
 
+conn = Connection()
+
 
 def label_func(fname):
-    return fname.name.split("_")[0]
+    image_classification = conn.get_image_classification(str(fname))
+    return image_classification.die_value if image_classification else 0
 
 
 dblock = DataBlock(
@@ -17,7 +24,6 @@ dblock = DataBlock(
     item_tfms=Resize(300),
 )
 dls = dblock.dataloaders(training_data_path)
-dls.show_batch()
 
 learn = Learner(
     dls,
@@ -29,7 +35,7 @@ learn = Learner(
 
 learn.fit_flat_cos(5, 8e-3)
 
-learn.predict(validation_data_path.joinpath("d20/d20_off-angle_0345.jpg").resolve())
+learn.predict(validation_data_path.joinpath("d20/d20_off-angle_0345.jpg"))
 
 learn.path = root_dir
 

@@ -24,10 +24,9 @@ class Connection:
             session.add(image_classification)
             session.commit()
 
-    def image_classification_exists(self, image_path):
+    def get_image_classification(self, image_path):
         with Session(self.engine) as session:
             stmt = select(ImageClassification).where(
                 ImageClassification.image_path.__eq__(image_path)
             )
-            image_classification = session.scalar(stmt)
-            return False if not image_classification else True
+            return session.scalar(stmt)

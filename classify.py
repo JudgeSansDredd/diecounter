@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 from platform import system
 
 import psutil
@@ -41,8 +42,9 @@ def main():
     for die_type in DIE_TYPES:
         dir_path = f"./training-data/train/d{die_type}"
         for image_path in os.listdir(dir_path):
-            fpath = f"{dir_path}/{image_path}"
-            if conn.image_classification_exists(fpath):
+            fpath = str(Path(f"{dir_path}/{image_path}").resolve())
+            image_classification = conn.get_image_classification(fpath)
+            if image_classification:
                 continue
             with Image.open(fpath) as img:
                 img.show()
