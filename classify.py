@@ -1,4 +1,5 @@
 import os
+from platform import system
 
 import psutil
 from PIL import Image
@@ -9,6 +10,13 @@ from dialogs.dialogs import Dialogs
 DIE_TYPES = [4, 6, 8, 10, 12, 20]
 
 
+def focus_on_terminal():
+    if system() == "Darwin":
+        os.system(
+            """/usr/bin/osascript -e 'tell app "Finder" to set frontmost of process "iTerm2" to true' """
+        )
+
+
 def kill_open_images():
     for proc in psutil.process_iter():
         name = proc.name()
@@ -17,6 +25,7 @@ def kill_open_images():
 
 
 def get_input():
+    focus_on_terminal()
     strValue, return_code = Dialogs.input_box("What value is showing?")
     if return_code == 1:
         exit()
