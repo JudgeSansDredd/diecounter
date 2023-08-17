@@ -35,8 +35,6 @@ learn = Learner(
 
 learn.fit_flat_cos(5, 8e-3)
 
-learn.predict(validation_data_path.joinpath("d20/d20_off-angle_0345.jpg"))
-
 learn.path = root_dir
 
 learn.save("5epoch")
